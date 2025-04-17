@@ -1,12 +1,13 @@
+# mongo-user-pvc.yaml
 apiVersion: v1
-kind: PersistentVolume
+kind: PersistentVolumeClaim
 metadata:
-  name: mongo-user-pv
+  name: mongo-user-pvc
+  namespace: microservices
 spec:
   storageClassName: manual
-  capacity:
-    storage: 1Gi
   accessModes:
     - ReadWriteOnce
-  hostPath:
-    path: "/mnt/data/mongo-user"
+  resources:
+    requests:
+      storage: 1Gi

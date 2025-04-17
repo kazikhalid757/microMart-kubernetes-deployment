@@ -1,12 +1,13 @@
+# mongo-product-pvc.yaml
 apiVersion: v1
-kind: PersistentVolume
+kind: PersistentVolumeClaim
 metadata:
-  name: mongo-product-pv
+  name: mongo-product-pvc
+  namespace: microservices
 spec:
   storageClassName: manual
-  capacity:
-    storage: 1Gi
   accessModes:
     - ReadWriteOnce
-  hostPath:
-    path: "/mnt/data/mongo-product"
+  resources:
+    requests:
+      storage: 1Gi
