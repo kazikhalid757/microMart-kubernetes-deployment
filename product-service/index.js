@@ -1,51 +1,24 @@
-import express from 'express';
-import { Sequelize } from 'sequelize';  // ES6 import for Sequelize
-import db from './db';  // Assuming db is a pg Pool or Sequelize instance
-
+const express = require('express');
+const db = require('./db');
 const app = express();
-
-// Sequelize connection
-const sequelize = new Sequelize(process.env.DB_URI);
-
-sequelize.authenticate()
-  .then(() => console.log('✅ Database connected successfully.'))
-  .catch(err => console.error('❌ Unable to connect to the database:', err));
-
 app.use(express.json());
 
-// Products routes
-app.get('/products', async (req, res) => {
-  try {
-    const [rows] = await db.query('SELECT * FROM products');
-    res.json(rows);
-  } catch (err) {
-    console.error('Error fetching products:', err);
-    res.status(500).send('Internal Server Error');
-  }
+// Root route to check app is running
+app.get('/', (req, res) => {
+  res.send('Product Service is running!');
 });
 
-app.post('/products', async (req, res) => {
-  const { name, price } = req.body;
-  try {
-    await db.query('INSERT INTO products (name, price) VALUES ($1, $2)', [name, price]);
-    res.send('Product added');
-  } catch (err) {
-    console.error('Error adding product:', err);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
-// Health check route
+// Health check route to verify DB connection
 app.get('/health', async (req, res) => {
   try {
-    await sequelize.authenticate();
-    res.status(200).send('DB is connected');
-  } catch (err) {
-    res.status(500).send('DB is not connected');
+    await db.query('SELECT 1'); // Simple query that doesn't require a table
+    res.send('Database connected successfully!');
+  } catch (error) {
+    console.error('Database connection failed:', error);
+    res.status(500).send('Database connection failed');
   }
 });
 
-// Start the service
 app.listen(3001, () => {
   console.log('Product service running on port 3001');
 });
