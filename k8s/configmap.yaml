@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: app-config
 data:
-  DB_HOST: your-postgres-host
-  DB_NAME: your-db-name
-  DB_USER: your-db-user
-  DB_PASSWORD: your-db-password
+  DB_HOST: database-1.cyvawyiqg42q.us-east-1.rds.amazonaws.com
+  DB_NAME: database-1
+  DB_USER: postgres
+  DB_PASSWORD: kazi12345
