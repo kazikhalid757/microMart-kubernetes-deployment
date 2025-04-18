@@ -7,4 +7,4 @@ data:
   DB_NAME: database-1
   DB_USER: postgres
   DB_PASSWORD: kazi12345
-
+  DB_PORT: "5432"
