@@ -3,15 +3,20 @@ const db = require('./db');
 const app = express();
 app.use(express.json());
 
-app.get('/users', async (req, res) => {
-  const { rows } = await db.query('SELECT * FROM users');
-  res.json(rows);
+// Root route to check app is running
+app.get('/', (req, res) => {
+  res.send('User Service is running!');
 });
 
-app.post('/users', async (req, res) => {
-  const { name, email } = req.body;
-  await db.query('INSERT INTO users (name, email) VALUES ($1, $2)', [name, email]);
-  res.send('User created');
+// Health check route to verify DB connection
+app.get('/health', async (req, res) => {
+  try {
+    await db.query('SELECT 1'); // Simple query that doesn't require a table
+    res.send('Database connected successfully!');
+  } catch (error) {
+    console.error('Database connection failed:', error);
+    res.status(500).send('Database connection failed');
+  }
 });
 
 app.listen(3000, () => {
