@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: frontend-deployment
 spec:
   replicas: 1
   selector:
@@ -14,9 +14,21 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: kazitamim757/micromart-frontend
+          image: kazitamim757/micromart-frontend:latest
           ports:
             - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 15
 ---
 apiVersion: v1
 kind: Service
@@ -28,3 +40,4 @@ spec:
   ports:
     - port: 80
       targetPort: 80
+  type: ClusterIP
