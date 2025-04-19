@@ -9,6 +9,8 @@ function App() {
   const [error, setError] = useState(null); // Added error state
 
   useEffect(() => {
+
+    console.log("Frontend Loaded!");
     // Fetch users
     axios.get('/api/users')
       .then(res => setUsers(res.data))
@@ -21,6 +23,8 @@ function App() {
       .catch(err => setError('Error fetching products'))
       .finally(() => setLoading(false));  // Set loading to false after request finishes
   }, []);
+
+  
 
   return (
     <div className="App">
