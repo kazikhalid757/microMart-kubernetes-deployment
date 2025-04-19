@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: kazitamim757/micromart-frontend:latest
+          image: kazitamim757/frontend:latest
           ports:
             - containerPort: 80
 ---

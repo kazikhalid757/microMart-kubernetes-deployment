@@ -17,9 +17,6 @@ spec:
           image: kazitamim757/product-service:latest
           ports:
             - containerPort: 3001
-          envFrom:
-            - configMapRef:
-                name: app-config
 
 ---
 apiVersion: v1
