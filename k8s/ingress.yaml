@@ -9,20 +9,22 @@ spec:
     - host: localhost
       http:
         paths:
-          - path: /api/users/?(.*)
+          - path: /api/users(/|$)(.*)
             pathType: Prefix
             backend:
               service:
                 name: user-service
                 port:
                   number: 3000
-          - path: /api/products/?(.*)
+
+          - path: /api/products(/|$)(.*)
             pathType: Prefix
             backend:
               service:
                 name: product-service
                 port:
                   number: 3001
+
           - path: /(.*)
             pathType: Prefix
             backend:
