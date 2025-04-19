@@ -26,11 +26,11 @@ kind: Service
 metadata:
   name: user-service
 spec:
-  type: NodePort  # Added to allow external access
+  type: ClusterIP    
   selector:
     app: user
   ports:
     - name: http
       port: 80
       targetPort: 3000
-      nodePort: 30080  # Optional: you can remove this line to let K8s auto-assign
+      nodePort: 30080  

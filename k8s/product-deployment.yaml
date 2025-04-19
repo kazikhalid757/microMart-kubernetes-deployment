@@ -20,12 +20,14 @@ spec:
           envFrom:
             - configMapRef:
                 name: app-config
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: product-service
 spec:
+  type: ClusterIP
   selector:
     app: product
   ports:

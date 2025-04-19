@@ -16,14 +16,14 @@ spec:
                 name: frontend-service
                 port:
                   number: 80
-          - path: /users
+          - path: /api/users
             pathType: Prefix
             backend:
               service:
                 name: user-service
                 port:
                   number: 80
-          - path: /products
+          - path: /api/products
             pathType: Prefix
             backend:
               service:
