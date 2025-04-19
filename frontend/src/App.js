@@ -1,37 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './App.css'; // Add custom styles for better UI
+import './App.css';
 
 function App() {
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);  // Added loading state
-  const [error, setError] = useState(null); // Added error state
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [usersRes, productsRes] = await Promise.all([
+          axios.get('/api/users'),
+          axios.get('/api/products')
+        ]);
 
-    console.log("Frontend Loaded!");
-    // Fetch users
-    axios.get('/api/users')
-      .then(res => setUsers(res.data))
-      .catch(err => setError('Error fetching users'))
-      .finally(() => setLoading(false));  // Set loading to false after request finishes
+        console.log("Users API response:", usersRes.data);
+        console.log("Products API response:", productsRes.data);
 
-    // Fetch products
-    axios.get('/api/products')
-      .then(res => setProducts(res.data))
-      .catch(err => setError('Error fetching products'))
-      .finally(() => setLoading(false));  // Set loading to false after request finishes
+        setUsers(Array.isArray(usersRes.data) ? usersRes.data : []);
+        setProducts(Array.isArray(productsRes.data) ? productsRes.data : []);
+      } catch (err) {
+        setError('Error fetching data');
+        console.error("Fetch error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
-
-  
 
   return (
     <div className="App">
       <h1>Micromart Dashboard</h1>
-      
-      {loading && <p>Loading data...</p>}  {/* Display loading message */}
-      {error && <p style={{ color: 'red' }}>{error}</p>}  {/* Display error message if there was an error */}
+
+      {loading && <p>Loading data...</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
       <div className="content">
         <h2>🧍 Users</h2>
