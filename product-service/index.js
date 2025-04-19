@@ -19,6 +19,17 @@ app.get('/health', async (req, res) => {
   }
 });
 
+// ✅ New API: Get all users
+app.get('/api/products', async (req, res) => {
+  try {
+    const result = await db.query('SELECT * FROM products');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ error: 'Failed to fetch products' });
+  }
+});
+
 app.listen(3001, () => {
   console.log('Product service running on port 3001');
 });
