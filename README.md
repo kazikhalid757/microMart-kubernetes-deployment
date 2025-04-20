@@ -6,7 +6,7 @@ This project deploys a microservices-based e-commerce application called **Micro
 ## Project Structure
 
 - **Frontend (React)**: The React-based user interface of the application.
-- **User Service (Node.js)**: A service for managing user data (authentication, profile, etc.).
+- **User Service (Node.js)**: A service for managing user data (profile).
 - **Product Service (Node.js)**: A service for managing product data (listing, details, etc.).
 - **PostgreSQL**: A relational database service for storing product and user data.
 
@@ -16,7 +16,6 @@ This project deploys a microservices-based e-commerce application called **Micro
 - **Frontend**: Built with React and served by Nginx.
 - **Kubernetes Deployments**: All services are deployed and managed with Kubernetes.
 - **Ingress Controller**: Routes traffic to the appropriate service (frontend, user, product).
-- **Persistent Storage**: PostgreSQL uses persistent storage through Kubernetes PVCs.
 
 ## Prerequisites
 
@@ -26,6 +25,36 @@ Ensure the following tools are installed on your local machine:
 - **Kubernetes**: For deploying and managing the application.
 - **kubectl**: For interacting with Kubernetes clusters.
 - **Node.js and NPM**: For building and running the React frontend and Node.js services.
+
+##  Architecture flowchart:
+                              ┌──────────────────────────────┐
+                             │         User (Browser)       │
+                             └──────────────┬───────────────┘
+                                            │
+                                            ▼
+                           ┌────────────────────────────────────┐
+                           │         Ingress Controller         │
+                           │        (NGINX - Handles Routing)   │
+                           └────────────┬────────────┬──────────┘
+                                        │            │
+                                        ▼            ▼
+                         ┌────────────────────┐ ┌──────────────────────┐
+                         │  Frontend (React)  │ │     Backend API      │
+                         │ frontend-service   │ │  (Ingress Paths to   │
+                         └──────────┬─────────┘ │  user & product svc) │
+                                    │           └──────────┬───────────┘
+                                    ▼                      ▼
+                   ┌──────────────────────────┐  ┌──────────────────────────┐
+                   │  User Service (Node.js)  │  │ Product Service (Node.js)│
+                   │     user-service         │  │   product-service        │
+                   └────────────┬─────────────┘  └────────────┬─────────────┘
+                                │                             │
+                                ▼                             ▼
+                     ┌──────────────────────┐     ┌────────────────────────┐
+                     │ PostgreSQL Database  │     │ PostgreSQL Database     │
+                     │     (AWS RDS)        │     │     (AWS RDS)           │
+                     └──────────────────────┘     └────────────────────────┘
+
 
 ## Project Setup
 
@@ -66,7 +95,7 @@ In the root of the project, apply the Kubernetes configurations:
 kubectl apply -f k8s/
 ```
 
-This will deploy all services and configurations including deployments, services, persistent volumes, PVCs, and ingress.
+This will deploy all services and configurations including deployments, services and ingress.
 
 ### 6. Access the Application
 
@@ -89,13 +118,6 @@ This will deploy all services and configurations including deployments, services
   kubectl logs <pod-name>
   ```
 
-- Check PVC and PV status:
-
-  ```bash
-  kubectl get pvc
-  kubectl get pv
-  ```
-
 - Check Ingress routes:
 
   ```bash
@@ -109,6 +131,8 @@ To delete the Kubernetes resources:
 ```bash
 kubectl delete -f k8s/
 ```
+## Picture:
+  ![Screenshot_10](https://github.com/user-attachments/assets/25a8aab3-c783-4526-83b0-cfe10d8fda26)
 
 ## Notes
 
